@@ -25,24 +25,20 @@ public class GameController : MonoBehaviour
     private HexGrid grid;
     TurnScreen turnScreen;
 
+    private NetworkController networkController;
+
     // Use this for initialization
     void Start()
     {
-        StartCoroutine(DelayedStart());
-    }
-
-    IEnumerator DelayedStart()
-    {
         grid = GameObject.Find("HexGrid").GetComponent<HexGrid>();
         turnScreen = GameObject.Find("Canvas").GetComponentInChildren<TurnScreen>();
+        networkController = GameObject.Find("NetworkController").GetComponent<NetworkController>();
         turnScreen.gameObject.SetActive(false);
 
         InitPlayers();
         InitMap();
-        yield return new WaitForSeconds(0.1f);  // spaceships after hex grid
         InitSpaceships();
 
-        yield return new WaitForSeconds(0.25f); // start after all the rest
         StartGame();
     }
 
@@ -74,65 +70,36 @@ public class GameController : MonoBehaviour
             // 1x scout
             for (int i = 0; i < 1; i++)
             {
-                spaceship = SpaceshipFromPref(ScoutPrefab, homePlanet);
-                spaceship.GetComponent<Spaceship>().Init();
-                spaceship.GetComponent<Spaceship>().Owned(player.GetComponent<Player>());
+                spaceship = homePlanet.BuildSpaceship(ScoutPrefab);
+                if (spaceship != null)
+                {
+                   
+                    spaceship.GetComponent<Spaceship>().Owned(player.GetComponent<Player>());
+                }
             }
 
             // 0x miner
             for (int i = 0; i < 0; i++)
             {
-                spaceship = SpaceshipFromPref(MinerPrefab, homePlanet);
-                spaceship.GetComponent<Spaceship>().Init();
-                spaceship.GetComponent<Spaceship>().Owned(player.GetComponent<Player>());
+                spaceship = homePlanet.BuildSpaceship(MinerPrefab);
+                if (spaceship != null)
+                {
+                    
+                    spaceship.GetComponent<Spaceship>().Owned(player.GetComponent<Player>());
+                }
             }
 
             // 0x colonizer
             for (int i = 0; i < 0; i++)
             {
-                spaceship = SpaceshipFromPref(ColonizerPrefab, homePlanet);
-                spaceship.GetComponent<Spaceship>().Init();
-                spaceship.GetComponent<Spaceship>().Owned(player.GetComponent<Player>());
+                spaceship = homePlanet.BuildSpaceship(ColonizerPrefab);
+                if (spaceship != null)
+                {
+                    
+                    spaceship.GetComponent<Spaceship>().Owned(player.GetComponent<Player>());
+                }
             }
         }
-    }
-
-    HexCell EmptyCell(HexCoordinates startCooridantes)
-    {
-        // serch for empty hexCell
-        HexCell cell;
-        for (int X = -1; X <= 1; X += 2)
-        {
-            HexCoordinates newCoordinates = new HexCoordinates(startCooridantes.X + X, startCooridantes.Z);
-            cell = grid.FromCoordinates(newCoordinates);
-            if (cell != null && cell.IsEmpty())
-                return cell;
-        }
-        for (int Z = -1; Z <= 1; Z += 2)
-        {
-            HexCoordinates newCoordinates = new HexCoordinates(startCooridantes.X, startCooridantes.Z + Z);
-            cell = grid.FromCoordinates(newCoordinates);
-            if (cell != null && cell.IsEmpty())
-                return cell;
-        }
-        return null;
-    }
-
-    GameObject SpaceshipFromPref(GameObject spaceshipPrefab, Planet startPlanet)
-    {
-
-        HexCoordinates homePlanetCoordinates = HexCoordinates.FromPosition(startPlanet.transform.position);
-        HexCell spaceshipGrid = EmptyCell(homePlanetCoordinates);
-
-        if (spaceshipGrid != null)
-        {
-            return Instantiate(spaceshipPrefab, spaceshipGrid.transform.position, Quaternion.identity);//.GetComponent<Spaceship>();
-        }
-        else
-        {
-            Debug.Log("Can't find empty cell for spaceship " + spaceshipPrefab.name + " for planet " + startPlanet.name);
-        }
-        return null;
     }
 
     void InitMap()
@@ -214,6 +181,7 @@ public class GameController : MonoBehaviour
         currentPlayerIndex = players.Count() - 1; // NextTurn will wrap index to zero at the beginning
         year = -1;  // NextTurn will increment Year at the beginning
         NextTurn();
+        networkController.StartServer();
     }
 
     public void NextTurn()
@@ -274,7 +242,6 @@ public class GameController : MonoBehaviour
             {
                 GameObject spaceship = planet.BuildSpaceship(spaceshipPrefab);
                 spaceship.GetComponent<Spaceship>().Owned(GetCurrentPlayer());
-                spaceship.GetComponent<Spaceship>().Init();
 
                 EventManager.selectionManager.SelectedObject = null;
                 grid.SetupNewTurn(GetCurrentPlayer());

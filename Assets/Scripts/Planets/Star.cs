@@ -11,8 +11,7 @@ public class Star : MonoBehaviour
     public HexCoordinates Coordinates { get; set; }
     private UIHoverListener uiListener;
 
-    // Use this for initialization
-    void Start()
+    void Awake()
     {
         grid = (GameObject.Find("HexGrid").GetComponent<HexGrid>());
         UpdateCoordinates();
@@ -27,7 +26,6 @@ public class Star : MonoBehaviour
         //Debug.Log(grid.FromCoordinates(Coordinates).transform.localPosition.ToString() + '\n' + Coordinates.ToString());
     }
 
-    // Update is called once per frame
     void Update()
     {
 

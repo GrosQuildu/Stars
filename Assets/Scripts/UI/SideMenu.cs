@@ -30,7 +30,6 @@ public class SideMenu : MonoBehaviour
         buildMinerButton = GameObject.Find("BuildMinerButton").GetComponent<Button>();
         OwnerName = GameObject.Find("OwnerName").GetComponent<Text>();
 
-
     }
 
     // Update is called once per frame

@@ -11,3 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DemoScene.unity
     guid: 5c8a7eebca2496f48ba8f080ff2f4101
+  - enabled: 1
+    path: Assets/Scenes/ServerScene.unity
+    guid: 2ce6ef6020386e142b01fa26cee397c2
+  - enabled: 1
+    path: Assets/Scenes/WaitScene.unity
+    guid: 11e51fad4ddf64a4bb4ba19db94cafbf
+  - enabled: 1
+    path: Assets/Scenes/StartClientScene.unity
+    guid: df1e09d224b68334ea1a0ea97fb5a085
+  m_configObjects: {}

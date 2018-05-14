@@ -33,7 +33,7 @@ public class SelectionGizmoController : MonoBehaviour
         {
             sound.Play();
             transform.hasChanged = false;
-            Debug.Log("click");
+            //Debug.Log("click");
         }
 
         transform.Rotate(Vector3.up * 20 * Time.deltaTime);

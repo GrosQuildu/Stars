@@ -37,15 +37,12 @@ public class Planet : Ownable
     private void Awake()
     {
         RadarRange = 40f;
-    }
 
-    void Start()
-    {
         grid = (GameObject.Find("HexGrid").GetComponent<HexGrid>());
         uiListener = GameObject.Find("Canvas").GetComponent<UIHoverListener>();
 
         UpdateCoordinates();
-        Debug.Log("Start planet " + name + ", coordinates: " + Coordinates + " - " + transform.position);
+        Debug.Log("Awake planet " + name + ", coordinates: " + Coordinates + " - " + transform.position);
     }
 
     string ToJson()
@@ -132,13 +129,14 @@ public class Planet : Ownable
         this.Owned(newOnwer);
         //   Destroy(gameObject);
     }
+
     public GameObject BuildSpaceship(GameObject spaceshipPrefab)
     {
         HexCoordinates homePlanetCoordinates = HexCoordinates.FromPosition(gameObject.transform.position);
         HexCell spaceshipGrid = EmptyCell(homePlanetCoordinates);
 
         if (spaceshipGrid != null)
-        {
+        {   
             return Instantiate(spaceshipPrefab, spaceshipGrid.transform.position, Quaternion.identity);//.GetComponent<Spaceship>();
         }
         else
@@ -147,6 +145,7 @@ public class Planet : Ownable
         }
         return null;
     }
+
     HexCell EmptyCell(HexCoordinates startCooridantes)
     {
         // serch for empty hexCell

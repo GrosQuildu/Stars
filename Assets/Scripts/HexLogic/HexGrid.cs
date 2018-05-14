@@ -34,6 +34,8 @@ public class HexGrid : MonoBehaviour
 
         CreateChunks();
         CreateCells();
+
+        uiListener = GameObject.Find("Canvas").GetComponent<UIHoverListener>();
     }
 
     void CreateCells()
@@ -97,11 +99,6 @@ public class HexGrid : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-
-        uiListener = GameObject.Find("Canvas").GetComponent<UIHoverListener>();
-    }
 
     void Update()
     {

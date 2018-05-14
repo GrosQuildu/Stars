@@ -14,8 +14,9 @@ public class Colonizer : Spaceship
     public Planet PlanetToColonize;
     public Text Test;
 
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
         MaxActionPoints = 4;
         RadarRange = 20;
     }

@@ -22,34 +22,23 @@ public class Spaceship : Ownable
     public int MaxActionPoints;
     private int actionPoints;
 
-    int i = 0; //for the movement test, remove later
-    private bool initialized = false;
-
-    private void Awake()
+    public void Awake()
     {
         Flying = false;
         RadarRange = 26f;
         MaxActionPoints = 7;
-    }
 
-    void Start()
-    {
-        if(!initialized)
-            Init();
-    }
-
-    public void Init()
-    {
-        initialized = true;
         grid = (GameObject.Find("HexGrid").GetComponent<HexGrid>());
-        // StartCoroutine(DelayedUpdate()); //Need to update coordinates after Hexes initialization is finished
-        UpdateCoordinates();
         uiListener = GameObject.Find("Canvas").GetComponent<UIHoverListener>();
+        UpdateCoordinates();
+
         burster = gameObject.GetComponentInChildren<ParticleSystem>();
         bursterLight = gameObject.GetComponentInChildren<Light>();
         engineSound = gameObject.GetComponent<AudioSource>();
 
         TurnEnginesOff();
+
+        Debug.Log("Spaceship awake");
     }
 
     override
@@ -161,24 +150,6 @@ public class Spaceship : Ownable
         Flying = false;
         TurnEnginesOff();
         Debug.Log("Flying done, ActionPoints: " + actionPoints);
-    }
-
-    IEnumerator DelayedUpdate()
-    {
-        yield return new WaitForSeconds(0.1f);
-        UpdateCoordinates();
-    }
-
-    public void DoTestStuff()
-    {
-        if (EventManager.selectionManager.SelectedObject.tag == "Unit")
-        {
-            EventManager.selectionManager.SelectedObject.GetComponent<Spaceship>().Move((EDirection)i);
-            i++;
-            if (i > 5) i = 0;
-
-            Debug.Log(string.Format("Destination: {0}", Destination));
-        }
     }
 
     public int GetActionPoints()
