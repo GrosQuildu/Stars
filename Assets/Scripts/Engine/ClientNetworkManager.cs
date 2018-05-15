@@ -11,6 +11,8 @@ public class ClientNetworkManager : NetworkManager
 
     public string playerName;
 
+    private GameController gameController;
+
     public void SetupClient()
     {
         Debug.Log("Setup client with " + serverAddressInputField.text + ":" + serverPortInputField.text + " " + playerInputField.text);
@@ -21,6 +23,14 @@ public class ClientNetworkManager : NetworkManager
     }
 
     // Client callbacks
+    public override void OnClientSceneChanged(NetworkConnection conn)
+    {
+        Debug.Log("OnClientSceneChanged: " + conn);
+        base.OnClientSceneChanged(conn);
+
+        gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        gameController.InitClient();
+    }
 
     public override void OnClientConnect(NetworkConnection conn)
 
@@ -57,8 +67,8 @@ public class ClientNetworkManager : NetworkManager
     public override void OnClientNotReady(NetworkConnection conn)
     {
 
-        Debug.Log("Server has set client to be not-ready (stop getting state updates)");
-
+        Debug.Log("Server has set client to be not-ready (stop getting state updates): " + conn);
+        gameController.WaitForTurn();
     }
 
     public override void OnStartClient(NetworkClient client)
@@ -72,15 +82,6 @@ public class ClientNetworkManager : NetworkManager
     {
 
         Debug.Log("Client has stopped");
-
-    }
-
-    public override void OnClientSceneChanged(NetworkConnection conn)
-    {
-
-        base.OnClientSceneChanged(conn);
-
-        Debug.Log("Server triggered scene change and we've done the same, do any extra work here for the client...");
 
     }
 

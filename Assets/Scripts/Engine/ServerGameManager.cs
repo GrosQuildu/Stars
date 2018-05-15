@@ -8,7 +8,7 @@ using System.Linq;
 using Assets.Scripts;
 using System.Collections.Generic;
 
-public class GameController : MonoBehaviour
+public class ServerGameManager : MonoBehaviour
 {
     private static List<GameObject> players;
     public GameObject PlayerPrefab;
@@ -25,19 +25,25 @@ public class GameController : MonoBehaviour
     private HexGrid grid;
     TurnScreen turnScreen;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
 
-    // Use this for initialization
     void Start()
     {
-        grid = GameObject.Find("HexGrid").GetComponent<HexGrid>();
-        turnScreen = GameObject.Find("Canvas").GetComponentInChildren<TurnScreen>();
-
-        turnScreen.gameObject.SetActive(false);
     }
 
     public void InitGame()
     {
-        Debug.Log("GameController init game");
+        Debug.Log("ServerGameManager init game");
+
+
+        grid = GameObject.Find("HexGrid").GetComponent<HexGrid>();
+        turnScreen = GameObject.Find("Canvas").GetComponentInChildren<TurnScreen>();
+
+        turnScreen.gameObject.SetActive(false);
+
         InitPlayers();
         InitMap();
         InitSpaceships();

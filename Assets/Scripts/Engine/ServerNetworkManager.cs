@@ -21,11 +21,23 @@ public class ServerNetworkManager : NetworkManager
 
     // Server callbacks
 
+    /* 
+     * called when "StartServer" in StartServerScene clicked
+    */
+    public override void OnServerSceneChanged(string sceneName)
+    {
+        base.OnServerSceneChanged(sceneName);
+
+        NetworkServer.SetAllClientsNotReady();
+
+        gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        gameController.InitGame();
+    }
+
     public override void OnServerConnect(NetworkConnection conn)
     {
 
         Debug.Log("A client connected to the server: " + conn);
-
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)
@@ -89,11 +101,7 @@ public class ServerNetworkManager : NetworkManager
 
     public override void OnStartServer()
     {
-
         Debug.Log("Server has started");
-        gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.InitGame();
-
     }
 
     public override void OnStopServer()
@@ -109,7 +117,5 @@ public class ServerNetworkManager : NetworkManager
         Debug.Log("Host has stopped");
 
     }
-
-
 
 }
