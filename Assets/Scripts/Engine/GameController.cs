@@ -25,22 +25,26 @@ public class GameController : MonoBehaviour
     private HexGrid grid;
     TurnScreen turnScreen;
 
-    private NetworkController networkController;
 
     // Use this for initialization
     void Start()
     {
         grid = GameObject.Find("HexGrid").GetComponent<HexGrid>();
         turnScreen = GameObject.Find("Canvas").GetComponentInChildren<TurnScreen>();
-        networkController = GameObject.Find("NetworkController").GetComponent<NetworkController>();
-        turnScreen.gameObject.SetActive(false);
 
+        turnScreen.gameObject.SetActive(false);
+    }
+
+    public void InitGame()
+    {
+        Debug.Log("GameController init game");
         InitPlayers();
         InitMap();
         InitSpaceships();
 
         StartGame();
     }
+
 
     void InitPlayers()
     {
@@ -181,7 +185,6 @@ public class GameController : MonoBehaviour
         currentPlayerIndex = players.Count() - 1; // NextTurn will wrap index to zero at the beginning
         year = -1;  // NextTurn will increment Year at the beginning
         NextTurn();
-        networkController.StartServer();
     }
 
     public void NextTurn()
