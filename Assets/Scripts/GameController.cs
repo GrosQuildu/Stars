@@ -8,9 +8,9 @@ using System.Linq;
 using Assets.Scripts;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
-
-public class GameController : MonoBehaviour
+public class GameController : NetworkBehaviour
 {
     private static List<GameObject> players;
     public GameObject PlayerPrefab;
@@ -18,9 +18,7 @@ public class GameController : MonoBehaviour
 
     public GameObject PlanetPrefab;
     public GameObject StartPrefab;
-    public GameObject ScoutPrefab;
-    public GameObject ColonizerPrefab;
-    public GameObject MinerPrefab;
+    
 
     private static int year;
 
@@ -28,31 +26,64 @@ public class GameController : MonoBehaviour
     TurnScreen turnScreen;
     
 
-    void Start()
+    void Awake()
     {
-       
-    }
-
-    public void InitGame()
-    {
-        Debug.Log("ServerGameManager init game");
-
+        Debug.Log("GameManager Start");
 
         grid = GameObject.Find("HexGrid").GetComponent<HexGrid>();
         turnScreen = GameObject.Find("Canvas").GetComponentInChildren<TurnScreen>();
 
         turnScreen.gameObject.SetActive(false);
+    }
 
-        InitPlayers();
-        InitMap();
+    public void InitGame(List<string> playerNames, string mapFile)
+    {
+        Debug.Log("GameManager init game");
+
+        InitPlayers(playerNames);
+        InitMap(mapFile);
         InitSpaceships();
 
         StartGame();
     }
 
+    [Command]
+    public void CmdCheckClient(string playerName)
+    {
+        Debug.Log("CmdCheckClient");
+        GameObject playerForConnection = null;
+
+        foreach (GameObject player in players)
+        {
+            if(player.name == playerName) { 
+                Debug.Log("CmdCheckClient player name found");
+                if(!player.GetComponent<Player>().IsConnected)
+                {
+                    playerForConnection = player;
+                    break;
+                }
+                else
+                {
+                    Debug.Log("CmdCheckClient player name have connection already");
+                }
+            }
+        }
+
+        if(playerForConnection == null)
+        {
+            Debug.Log("CmdCheckClient invalid client");
+            connectionToClient.Disconnect();
+        } else
+        {
+            Debug.Log("CmdCheckClient valid client");
+            playerForConnection.GetComponent<Player>().AssignConnection(connectionToClient);
+        }
+    }
+
     public void InitClient()
     {
         Debug.Log("init client");
+
     }
 
     public void WaitForTurn()
@@ -61,19 +92,17 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene("WaitScene");
     }
 
-    void InitPlayers()
+    void InitPlayers(List<string> playerNames)
     {
         // Create players from prefab.
         players = new List<GameObject>();
-        players.Add(Instantiate(PlayerPrefab));
-        players[0].GetComponent<Player>().Human = true;
-        players[0].name = "Player";
 
-        for (int i = 1; i < 1; i++)
+        for (int i = 0; i < playerNames.Count; i++)
         {
             players.Add(Instantiate(PlayerPrefab));
-            players[i].GetComponent<Player>().Human = false;
-            players[i].name = "AI-" + i;
+            players[i].GetComponent<Player>().Human = true;
+            players[i].name = playerNames[i];
+            NetworkServer.Spawn(players[i]);
         }
 
         currentPlayerIndex = 0;
@@ -89,39 +118,26 @@ public class GameController : MonoBehaviour
             // 1x scout
             for (int i = 0; i < 1; i++)
             {
-                spaceship = homePlanet.BuildSpaceship(ScoutPrefab);
-                if (spaceship != null)
-                {
+                homePlanet.BuildSpaceship("ScoutPrefab");
 
-                    spaceship.GetComponent<Spaceship>().Owned(player.GetComponent<Player>());
-                }
             }
 
             // 0x miner
             for (int i = 0; i < 0; i++)
             {
-                spaceship = homePlanet.BuildSpaceship(MinerPrefab);
-                if (spaceship != null)
-                {
+                homePlanet.BuildSpaceship("MinerPrefab");
 
-                    spaceship.GetComponent<Spaceship>().Owned(player.GetComponent<Player>());
-                }
             }
 
             // 0x colonizer
             for (int i = 0; i < 0; i++)
             {
-                spaceship = homePlanet.BuildSpaceship(ColonizerPrefab);
-                if (spaceship != null)
-                {
-
-                    spaceship.GetComponent<Spaceship>().Owned(player.GetComponent<Player>());
-                }
+                homePlanet.BuildSpaceship("ColonizerPrefab");
             }
         }
     }
 
-    void InitMap()
+    void InitMap(String mapFile)
     {
         // Create map from file / random.
         // todo: in main menu we should decide if map is from file or random and set parameters
@@ -129,7 +145,7 @@ public class GameController : MonoBehaviour
         // serializacje w unity ssie, trzeba bedzie doprawcowac (potrzebne bedzie do save/load i pewnie networkingu...)
         // todo: w jsonach nie moze byc utf8
 
-        JObject o = JObject.Parse(Resources.Load("map1").ToString());
+        JObject o = JObject.Parse(Resources.Load(mapFile).ToString());
         InitPlanets((JArray)o["planets"]);
         InitStars((JArray)o["stars"]);
     }
@@ -157,6 +173,8 @@ public class GameController : MonoBehaviour
                 if (materialString != null)
                     planet.GetComponentsInChildren<MeshRenderer>()[0].material = newMaterial;
             }
+
+            NetworkServer.Spawn(planet);
 
             if ((bool)jPlanetSerialized["mayBeHome"] == true && playersWithHomePLanet < players.Count())
             {
@@ -191,6 +209,8 @@ public class GameController : MonoBehaviour
                 if (materialString != null)
                     star.GetComponentsInChildren<MeshRenderer>()[0].material = newMaterial;
             }
+
+            NetworkServer.Spawn(star);
         }
     }
 
@@ -202,16 +222,25 @@ public class GameController : MonoBehaviour
         NextTurn();
     }
 
+    public void ServerNextTurn()
+    {
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count();
+        if (currentPlayerIndex == 0)
+        {
+            NextYear();
+        }
+    }
+
+    public void NextYear()
+    {
+        year++;
+        Debug.Log("New year: " + year);
+    }
+
     public void NextTurn()
     {
         turnScreen.gameObject.SetActive(true);
         turnScreen.Play();
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count();
-        if (currentPlayerIndex == 0)
-        {
-            year++;
-            Debug.Log("New year: " + year);
-        }
 
         foreach (Ownable owned in GetCurrentPlayer().GetOwned())
         {
@@ -258,8 +287,7 @@ public class GameController : MonoBehaviour
         {
             if (planet.IsPossibleBuildSpaceship())
             {
-                GameObject spaceship = planet.BuildSpaceship(spaceshipPrefab);
-                spaceship.GetComponent<Spaceship>().Owned(GetCurrentPlayer());
+                planet.CmdBuildSpaceship(spaceshipPrefab.name);
 
                 EventManager.selectionManager.SelectedObject = null;
                 grid.SetupNewTurn(GetCurrentPlayer());

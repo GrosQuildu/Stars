@@ -506,7 +506,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Server port
+  m_Text: 7777
 --- !u!222 &597112015
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -573,7 +573,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: Server port
+  m_Text: 7777
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -810,7 +810,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: Server address
+  m_Text: 192.168.1.10
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -886,7 +886,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Server addre
+  m_Text: 192.168.1.10
 --- !u!222 &759239824
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1694,19 +1694,24 @@ MonoBehaviour:
   m_NetworkPort: 7777
   m_ServerBindToIP: 0
   m_ServerBindAddress: 
-  m_NetworkAddress: localhost
+  m_NetworkAddress: 192.168.1.10
   m_DontDestroyOnLoad: 1
   m_RunInBackground: 1
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
-  m_LogLevel: 0
+  m_LogLevel: 1
   m_PlayerPrefab: {fileID: 1422251747889556, guid: 790d76777a58e294cb62a636d0c07f12,
     type: 2}
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 0
   m_OfflineScene: DemoMenu
   m_OnlineScene: DemoScene
-  m_SpawnPrefabs: []
+  m_SpawnPrefabs:
+  - {fileID: 1108593213390482, guid: d8ca4bfcce2e9c444b7af6845250e4bb, type: 2}
+  - {fileID: 1272119975188878, guid: 12fd37dd8982e6345bdd2ea398c51b9d, type: 2}
+  - {fileID: 1661768486814866, guid: 3810b9e8805d13949a898579129c3153, type: 2}
+  - {fileID: 1622567210660544, guid: 369741fba7c5a4144bc007b966b8fcd6, type: 2}
+  - {fileID: 1533931309970648, guid: a2570eb8f60004743aea0e2be5f3e31f, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -1861,14 +1866,14 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 648733621}
-          m_MethodName: Quit
-          m_Mode: 1
+          m_MethodName: LoadLevel
+          m_Mode: 5
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: DemoScene
+            m_StringArgument: DemoMenu
             m_BoolArgument: 0
           m_CallState: 1
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,

@@ -2,20 +2,20 @@
 using System.Collections;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class ServerNetworkManager : NetworkManager
 {
     public InputField player1, player2, player3;
-    private string playerName1, playerName2, playerName3;
+    public InputField bindAddress, bindPort;
 
     private GameController gameController;
 
     public void SetupServer()
     {
         Debug.Log("Setup server with " + player1.text + ", " + player2.text + ", " + player3.text);
-        this.playerName1 = player1.text;
-        this.playerName2 = player2.text;
-        this.playerName3 = player3.text;
+        this.networkAddress = bindAddress.text;
+        this.networkPort = int.Parse(bindPort.text);
         this.StartServer();
     }
 
@@ -28,10 +28,13 @@ public class ServerNetworkManager : NetworkManager
     {
         base.OnServerSceneChanged(sceneName);
 
-        NetworkServer.SetAllClientsNotReady();
-
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        gameController.InitGame();
+
+        List<string> players = new List<string>();
+        players.Add(player1.text);
+        players.Add(player2.text);
+        players.Add(player3.text);
+        gameController.InitGame(players, "map1");
     }
 
     public override void OnServerConnect(NetworkConnection conn)
@@ -73,6 +76,7 @@ public class ServerNetworkManager : NetworkManager
         NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
 
         Debug.Log("Client has requested to get his player added to the game");
+
 
     }
 

@@ -16,7 +16,7 @@ public class ClientNetworkManager : NetworkManager
     public void SetupClient()
     {
         Debug.Log("Setup client with " + serverAddressInputField.text + ":" + serverPortInputField.text + " " + playerInputField.text);
-        this.networkAddress = serverAddressInputField.text;
+        //this.networkAddress = serverAddressInputField.text;
         this.networkPort = int.Parse(serverPortInputField.text);
         this.playerName = playerInputField.text;
         this.StartClient();
@@ -28,7 +28,8 @@ public class ClientNetworkManager : NetworkManager
         Debug.Log("OnClientSceneChanged: " + conn);
         base.OnClientSceneChanged(conn);
 
-        gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        gameController = GameObject.Find("GameController").GetComponent<GameController>(); 
+        gameController.CmdCheckClient(this.playerName);
         gameController.InitClient();
     }
 

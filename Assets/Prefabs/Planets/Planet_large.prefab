@@ -147,6 +147,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: 9c0cb8e74ac6d8d45bd76492ed9ab7d5, type: 2}
   m_StaticBatchInfo:
@@ -181,6 +182,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: d534810f4f95b67449e8e35a2e9b8300, type: 2}
   m_StaticBatchInfo:
@@ -227,6 +229,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70f614f502096a944bd133686cd1e1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RadarRange: 0
+  ScoutPrefab: {fileID: 1661768486814866, guid: 3810b9e8805d13949a898579129c3153,
+    type: 2}
+  ColonizerPrefab: {fileID: 1108593213390482, guid: d8ca4bfcce2e9c444b7af6845250e4bb,
+    type: 2}
+  MinerPrefab: {fileID: 1272119975188878, guid: 12fd37dd8982e6345bdd2ea398c51b9d,
+    type: 2}
+  Characteristics:
+    Temperature: 0
+    Radiation: 0
+    Oxygen: 0
+  Resources:
+    Minerals: 0
+    Energy: 0
+    Population: 0
 --- !u!114 &114597122602952712
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -238,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c912a32390b7f408686c70ec7f5254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  Speed: 5
 --- !u!135 &135592747572671118
 SphereCollider:
   m_ObjectHideFlags: 1

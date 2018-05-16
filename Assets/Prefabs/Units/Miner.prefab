@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 135996545955213200}
   - component: {fileID: 82145942305215524}
   - component: {fileID: 114103148503660622}
+  - component: {fileID: 114104426035583566}
   m_Layer: 0
   m_Name: Miner
   m_TagString: Unit
@@ -432,6 +433,38 @@ MonoBehaviour:
   MaxActionPoints: 0
   PlanetToColonize: {fileID: 0}
   Test: {fileID: 0}
+--- !u!114 &114104426035583566
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1272119975188878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 18
+    i1: 253
+    i2: 55
+    i3: 221
+    i4: 137
+    i5: 130
+    i6: 230
+    i7: 52
+    i8: 91
+    i9: 221
+    i10: 46
+    i11: 163
+    i12: 152
+    i13: 197
+    i14: 27
+    i15: 157
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!135 &135996545955213200
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -8,9 +8,15 @@ using System.Text;
 using System.IO;
 using Newtonsoft.Json;
 using Assets.Scripts.HexLogic;
+using UnityEngine.Networking;
 
 public class Planet : Ownable
 {
+    public GameObject ScoutPrefab;
+    public GameObject ColonizerPrefab;
+    public GameObject MinerPrefab;
+    private Dictionary<string, GameObject> spacehipPrefabs;
+
     [System.Serializable]
     public struct PlanetCharacteristics
     {
@@ -40,6 +46,11 @@ public class Planet : Ownable
 
         grid = (GameObject.Find("HexGrid").GetComponent<HexGrid>());
         uiListener = GameObject.Find("Canvas").GetComponent<UIHoverListener>();
+
+        spacehipPrefabs = new Dictionary<string, GameObject>();
+        spacehipPrefabs.Add("ScoutPrefab", ScoutPrefab);
+        spacehipPrefabs.Add("ColonizerPrefab", ColonizerPrefab);
+        spacehipPrefabs.Add("MinerPrefab", MinerPrefab);
 
         UpdateCoordinates();
         Debug.Log("Awake planet " + name + ", coordinates: " + Coordinates + " - " + transform.position);
@@ -130,20 +141,31 @@ public class Planet : Ownable
         //   Destroy(gameObject);
     }
 
-    public GameObject BuildSpaceship(GameObject spaceshipPrefab)
+    public void BuildSpaceship(string spaceshipPrefabName)
     {
+        if (!spacehipPrefabs.ContainsKey(spaceshipPrefabName))
+        {
+            return;
+        }
+
         HexCoordinates homePlanetCoordinates = HexCoordinates.FromPosition(gameObject.transform.position);
         HexCell spaceshipGrid = EmptyCell(homePlanetCoordinates);
 
         if (spaceshipGrid != null)
-        {   
-            return Instantiate(spaceshipPrefab, spaceshipGrid.transform.position, Quaternion.identity);//.GetComponent<Spaceship>();
+        {
+            GameObject spaceship = (GameObject)Instantiate(spacehipPrefabs[spaceshipPrefabName], spaceshipGrid.transform.position, Quaternion.identity);
+            NetworkServer.Spawn(spaceship);
         }
         else
         {
-            Debug.Log("Can't find empty cell for spaceship " + spaceshipPrefab.name + " for planet " + gameObject.name);
+            Debug.Log("Can't find empty cell for spaceship " + spaceshipPrefabName + " for planet " + gameObject.name);
         }
-        return null;
+    }
+
+    [Command]
+    public void CmdBuildSpaceship(string spaceshipPrefabName)
+    {
+        BuildSpaceship(spaceshipPrefabName);
     }
 
     HexCell EmptyCell(HexCoordinates startCooridantes)

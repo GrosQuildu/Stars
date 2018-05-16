@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public abstract class Ownable : MonoBehaviour
+public abstract class Ownable : NetworkBehaviour
 {
     protected Player owner;
     public float RadarRange;

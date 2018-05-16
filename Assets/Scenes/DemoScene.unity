@@ -583,6 +583,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1701094489}
   - component: {fileID: 1701094488}
+  - component: {fileID: 1701094490}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -607,12 +608,6 @@ MonoBehaviour:
     type: 2}
   StartPrefab: {fileID: 1533931309970648, guid: a2570eb8f60004743aea0e2be5f3e31f,
     type: 2}
-  ScoutPrefab: {fileID: 1661768486814866, guid: 3810b9e8805d13949a898579129c3153,
-    type: 2}
-  ColonizerPrefab: {fileID: 1108593213390482, guid: d8ca4bfcce2e9c444b7af6845250e4bb,
-    type: 2}
-  MinerPrefab: {fileID: 1272119975188878, guid: 12fd37dd8982e6345bdd2ea398c51b9d,
-    type: 2}
 --- !u!4 &1701094489
 Transform:
   m_ObjectHideFlags: 0
@@ -626,6 +621,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1701094490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1701094487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 0
+    i1: 0
+    i2: 0
+    i3: 0
+    i4: 0
+    i5: 0
+    i6: 0
+    i7: 0
+    i8: 0
+    i9: 0
+    i10: 0
+    i11: 0
+    i12: 0
+    i13: 0
+    i14: 0
+    i15: 0
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!1001 &2012502220
 Prefab:
   m_ObjectHideFlags: 0

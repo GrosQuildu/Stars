@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 public class NetworkPlayer : NetworkBehaviour
 {
 
+
     // Use this for initialization
     void Start()
     {
@@ -20,5 +21,6 @@ public class NetworkPlayer : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         Debug.Log("OnStartLocalPlayer");
+        
     }
 }
