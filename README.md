@@ -4,6 +4,11 @@ STARS is a 4X turn-based strategy game made in Unity as a student project,
 heavily inspired by such titles as: Stars!(1995) and Sid Meier's Civilization VI(2016).
 The game allows for local (hot-seat) and remote multiplayer play.
 
+![Screenshot 1](img1.png?raw=true "Screenshot 1")
+![Screenshot 2](img2.png?raw=true "Screenshot 2")
+
+[Blog post about the game](https://sjakobczyk.com/2018/07/12/stars/)
+
 ## How to Play
 
 An up-to-date (though still buggy) build of the game can be found here: https://drive.google.com/open?id=1pZ1cOz0xuFr9IlPLa4Zgrk65K80hzBZL .
@@ -23,10 +28,15 @@ To build the project you need Unity 2017.4.6f1 LTS
 ## Authors
 
 Szymon Jakóbczyk - Project Manager, Artist, Gameplay Programmer,
+
 Paweł Płatek - Gameplay and Web programmer,
+
 Michał Mielus - Gameplay Programmer,
+
 Maciej Rajs - Gameplay Programmer,
+
 Minh Nhật Trịnh - Automated Tests,
+
 Izabela Musztyfaga - Testing, Documentation.
 
 ## License
